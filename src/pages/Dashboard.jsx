@@ -9,11 +9,12 @@ export default function Dashboard() {
     const [inviteCode, setInviteCode] = useState("");
     const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const loadItems = useCallback(async () => {
         if (!householdId) return;
         try {
-            const res = await axios.get(`http://localhost:5000/api/items/${householdId}`);
+            const res = await axios.get(`${API_URL}/api/items/${householdId}`);
             setItems(res.data.items);
         } catch (e) {
             console.error("Error loading items:", e);
@@ -30,7 +31,7 @@ export default function Dashboard() {
             return;
         }
         try {
-            await axios.post("http://localhost:5000/api/items/add", {
+            await axios.post(`${API_URL}/api/items/add`, {
                 householdId,
                 name: newItem.name,
                 category: newItem.category,
@@ -47,7 +48,7 @@ export default function Dashboard() {
 
     const deleteItem = async (itemId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/items/${itemId}`);
+            await axios.delete(`${API_URL}/api/items/${itemId}`);
             loadItems();
         } catch (e) {
             alert("Error deleting item");
@@ -56,7 +57,7 @@ export default function Dashboard() {
 
     const markDone = async (itemId) => {
         try {
-            await axios.put(`http://localhost:5000/api/items/${itemId}/status`, {
+            await axios.put(`${API_URL}/api/items/${itemId}/status`, {
                 status: "used"
             });
             loadItems();
@@ -67,7 +68,7 @@ export default function Dashboard() {
 
     const createHousehold = async () => {
         try {
-            const res = await axios.post("http://localhost:5000/api/households/create", {
+            const res = await axios.post(`${API_URL}/api/households/create`, {
                 name: "My Household",
                 userId
             });
