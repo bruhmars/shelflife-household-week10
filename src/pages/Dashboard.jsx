@@ -19,7 +19,7 @@ export default function Dashboard() {
         } catch (e) {
             console.error("Error loading items:", e);
         }
-    }, [householdId]);
+    }, [householdId,  API_URL]);
 
     useEffect(() => {
         loadItems();
